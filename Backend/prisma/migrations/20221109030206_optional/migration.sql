@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE "Quote" ALTER COLUMN "offerOwner" DROP NOT NULL,
+ALTER COLUMN "offerClient" DROP NOT NULL,
+ALTER COLUMN "state" DROP NOT NULL;

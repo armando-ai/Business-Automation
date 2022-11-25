@@ -1,0 +1,116 @@
+version: '3.8'
+networks:
+  business:
+    external: false
+
+services:
+
+  auth:
+    build:
+      context: .
+      dockerfile: ./apps/auth/Dockerfile
+      target: development
+    command: npm run start:dev auth
+    env_file:
+      - ./apps/auth/.env
+    networks:
+      - business
+    ports:
+      - 8500:8500
+
+  users:
+    build:
+      context: .
+      dockerfile: ./apps/users/Dockerfile
+      target: development
+    deploy:
+      resources:
+        limits:
+          memory: 11GB
+        reservations:
+          memory: 5GB  
+    command: >
+      sh -c " npm run start:dev users"
+    env_file:
+      - ./apps/users/.env 
+    # deploy:
+    #   replicas: 3
+# npx prisma migrate dev --name init && 
+    networks:
+      - business
+    ports:
+      - '3500'
+    depends_on:
+      - postgres-users
+      - eureka
+      - rabbitmq
+  calendar:
+    build:
+      context: .
+      dockerfile: ./apps/calendar/Dockerfile
+      target: development
+    environment:
+      TZ: "America/Denver"
+    command: >
+      sh -c " npm run start:dev calendar"
+    env_file:
+      - ./apps/calendar/.env
+    
+    # deploy:
+    #   replicas: 3
+
+    networks:
+      - business
+    ports:
+      - '4500'
+    depends_on:
+      - postgres-users
+      - eureka
+      - rabbitmq
+  email:
+    image: mail:1.0
+    env_file:
+      - C:\Users\Armando\Capstone\Mail\.env
+    networks:
+      - business
+    depends_on:
+      - postgres-users
+      - eureka
+      - rabbitmq
+
+  eureka:
+    image: steeltoeoss/eureka-server
+    ports:
+      - "8761:8761"
+    networks:
+      - business
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "9001:5672"
+      - "9000:15672"
+    networks:
+      - business
+  gateway:
+    image: paco1232dsq/gateway
+    networks:
+      - business
+    ports:
+      - 8080:8080
+    depends_on:
+      - eureka
+
+  postgres-users:
+    image: postgres:latest
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=users
+
+    networks:
+      - business
+    ports:
+      - 5432:5432
+
+
