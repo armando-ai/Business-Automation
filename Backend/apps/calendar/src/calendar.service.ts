@@ -90,7 +90,8 @@ export class CalendarService {
       where:{
         id:quote.id
       },data:{
-        state:"Owner Responded"
+        state:"Owner Responded2",
+        offerType:""
       }
     })
     await this.calendarClient.emit("service termination1", { name: userinfo.name, email: userinfo.email });
@@ -103,7 +104,8 @@ export class CalendarService {
     const clients = [];
     const allClients = await this.prisma.client.findMany({
       include: {
-        user: true
+        user: true,
+       quote:true, 
       },
       orderBy: {
         user: {
@@ -130,7 +132,7 @@ export class CalendarService {
       }
 
       clients.push({
-        name: user.name, address: addy, email: user.email, balance: amtOwed, due: amtDue
+        name: user.name, address: addy, email: user.email, balance: amtOwed, due: amtDue,state:allClients[index].quote[0].state
       })
 
 

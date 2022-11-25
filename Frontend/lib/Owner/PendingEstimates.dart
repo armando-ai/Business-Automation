@@ -81,7 +81,8 @@ class _PendingEstimatesState extends State<PendingEstimates> {
 
           if (element['state'] == "Completed" ||
               element['state'] == "Client Declined" ||
-              element['state'] == "Owner Declined") {
+              element['state'] == "Owner Declined" ||
+              element['state'] == 'Owner Responded2') {
             print(element['state']);
           } else {
             boxAppt.addAll([

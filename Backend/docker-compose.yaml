@@ -68,7 +68,7 @@ services:
       - eureka
       - rabbitmq
   email:
-    image: mail:1.0
+    image: mail:latest
     env_file:
       - C:\Users\Armando\Capstone\Mail\.env
     networks:

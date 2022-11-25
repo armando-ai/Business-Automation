@@ -90,7 +90,8 @@ class _QuotesState extends State<Quotes> {
         var element = appts[i];
         print("value:${DateTime.parse(element['date'])}");
         var selectedDate = DateTime.parse(element['date']);
-        if (element['state'] == 'Owner Responded') {
+        if (element['state'] == 'Owner Responded' ||
+            element['state'] == 'Owner Responded2') {
           boxAppt.addAll([
             const SizedBox(height: 20),
             const Padding(padding: EdgeInsets.all(8)),
@@ -695,7 +696,7 @@ class _QuotesState extends State<Quotes> {
                                 });
                           },
                           child: Text(
-                            '${element['state']}',
+                            'Owner Responded',
                             style: const TextStyle(
                                 color: Colors.white, fontFamily: 'opjn'),
                           )))),
@@ -1483,7 +1484,8 @@ class _QuotesState extends State<Quotes> {
                           child: const Text('Setup Initial Appointments',
                               style: TextStyle(color: Colors.white)),
                           onPressed: () {
-                            Navigator.of(context).popAndPushNamed('/initialdates',
+                            Navigator.of(context).popAndPushNamed(
+                                '/initialdates',
                                 arguments: json.encode({
                                   "id":
                                       jsonDecode(this.arguments.message)['id'],

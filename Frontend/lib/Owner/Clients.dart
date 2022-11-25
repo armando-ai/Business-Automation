@@ -175,34 +175,36 @@ class _ClientsState extends State<Clients> {
       List allValues = jsonDecode(value);
       for (var i = 0; i < allValues.length; i++) {
         var element = allValues.elementAt(i);
-
-        allclients.add(ListTile(
-            leading: Text(
-              '${element["name"]}',
-              style: TextStyle(fontSize: 20),
-            ),
-            onTap: () {
-              Navigator.of(context).pushNamed('/clientInfo',
-                  arguments: json.encode({
-                    "id": jsonDecode(this.arguments.message)['id'],
-                    "token": jsonDecode(this.arguments.message)['token'],
-                    "user": element
-                  }));
-            },
-            shape: i == allValues.length - 1
-                ? null
-                : Border(
-                    bottom: BorderSide(color: Color(0xFFE7F6F2), width: 1.2)),
-            contentPadding: EdgeInsets.only(left: 20),
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Icon(
-                  Icons.arrow_forward_ios,
-                  color: Colors.white,
-                )
-              ],
-            )));
+        if (element["state"] == "Owner Responded2") {
+        } else {
+          allclients.add(ListTile(
+              leading: Text(
+                '${element["name"]}',
+                style: TextStyle(fontSize: 20),
+              ),
+              onTap: () {
+                Navigator.of(context).pushNamed('/clientInfo',
+                    arguments: json.encode({
+                      "id": jsonDecode(this.arguments.message)['id'],
+                      "token": jsonDecode(this.arguments.message)['token'],
+                      "user": element
+                    }));
+              },
+              shape: i == allValues.length - 1
+                  ? null
+                  : Border(
+                      bottom: BorderSide(color: Color(0xFFE7F6F2), width: 1.2)),
+              contentPadding: EdgeInsets.only(left: 20),
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Icon(
+                    Icons.arrow_forward_ios,
+                    color: Colors.white,
+                  )
+                ],
+              )));
+        }
       }
     });
     print(allclients.length);
